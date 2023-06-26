@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
+</head>
+<body>
+    <!-- 관계 선택자-->
+    <div id="wrap">
+        <div id="inner_wrap">
+            <h1>제목1</h1>
+            <h2>제목2</h2>
+            <h3>제목3</h3>
+            <p>내용</p>
+            <div>
+                <h1>하위요소1</h1>
+                <h2>하위요소2</h2>
+            </div>
+        </div>
+    </div>
+    <script>
+        //상위는 위에 전체
+        //부모 선택자(나를 감싸는 태그 바로 위에 태그)  parent() 는 내 위에 아이 parents() 는 내 위에 모든 상위들
+        $('#inner_wrap').parent().css('border', '1px solid black');
+        
+        //하위 요소 선택자(내가 감싸고 있는 모든 아이들) 공백이 있고 하위가 지칭 됨
+        $('#wrap h1').css('color','blue');
+
+        //자식 요소 선택자(내가 가장 먼저 안에 감싸고 있는 아이) 두가지 방식
+        $('#inner_wrap > h1').text('자식요소로 선택');
+        $('#inner_wrap').children().text('children() 함수를 이용')     //복수이니 모든 자식 요소들
+
+    </script>
+    <hr>
+    <div id="content">
+        <h1>인접관계 선택자</h1>
+        <p>내용1</p>
+        <p class="txt">내용2</p>
+        <p>내용3</p>
+        <p>내용4</p>
+        <span>추가한 내용</span>
+    </div>
+
+    <script>
+        //형(이전) 요소 선택자
+        $('.txt').prev().css('background-color','#0ff')
+                        .css('border', '2px solid #f00');
+
+        $('.txt').prevAll().text('이전 요소들')     //내앞의 모든 요소들 가지고 옴
+        $('.txt').prevUntil('h1').css('border', '10px solid green');  //중간에 범위 적은아이 전까지 모두 적용
+        //동생(이후)  요소 선택자
+        $('.txt').next().next().css('color','red');
+        $('.txt').nextAll().text('다음 요소들');
+        $('.txt').nextUntil('span').css('border', '10px solid skyblue');
+        $('.txt +p').text('선택');      //  + 는 and 조건(내 바로 뒤에 들어오고 태그의 속성도 맞아야함)
+    </script>
+    <hr>
+    <div>
+        <h5 class="title">선택자</h5>
+        <section>
+            <div>
+                <p class="txt1">내용</p>
+            </div>
+        </section>
+        <section>
+            <div>
+                <p class="txt2">내용</p>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        //상위 요소 선택자
+        $('.txt2').parents('div').css('border','3px solid yellow');
+
+        //가장 가까운 상위 요소자 호출
+        $('.txt1').closest('div').css('border', '2px solid blue');
+
+        //자기를 제외한 형제 요소 가져오기
+        $('h5').siblings().css('background-color', 'pink');
+    </script>
+
+    <hr>
+    <div>
+        <div>
+            <input type="text" id="txDt" value="2023-12-25">
+        </div>
+        <div>
+            <p name="holiday">크리스마스 이브</p>
+            <input type="text" size="3">년
+            <input type="text" class="date" size="3">월
+            <input type="text" size="3">일
+        </div>
+        <div id="msg">
+            <div>
+                <label>
+                    <p class="title"></p>
+                    <input type="text">
+                </label>
+                <button type="button">출력</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let dateVal = $('#txDt').val();
+        let dateAry = dateVal.split('-');
+        
+        let dates = $('.date').parent().children('input');
+        for(let i=0; i< dates.length; i++){
+            dates[i].value = dateAry[i];
+        }
+        $('button').on('click', function(e){
+         //출력버튼을 눌렀을 때
+        let holiday = $('.date > div > p').text();
+        let msg = holiday + '//' + 'Hello,Worid';
+        $('p.title').text(msg);
+
+        
+        });
+
+
+    </script>
+
+    <!-- <script>
+        // input 은 val 로 하기
+        
+        let data = $('#txDt').val();
+        console.log(data);
+        let data2 = data.split("-");
+        $('.date').prev().val(data2[0]);
+        $('.date').val(data2[1]);
+        $('.date').next().val(data2[2]);
+        $('button').on('click', function(e){
+         //출력버튼을 눌렀을 때
+        });
+    </script>   -->
+</body>
+</html>

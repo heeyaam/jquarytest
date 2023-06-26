@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
+</head>
+<body>
+    <div id="app">
+        <p>제목</p>
+        <input type="text" name="title" value="스토너">
+    </div>
+    
+
+    <script>
+//         let pTag= jQuery('#app > p');   //기본적인 시작 형태 
+//         console.log(pTag.text());
+        let pTag = document.querySelector('#app >p');  //querySelector(하위요소 검색하는 것:여러가지 정보중 무조건 제일 먼저인하나만 가져옴)
+                                                        //querySelectorAll()
+        pTag = document.getElementById('app').querySelector('p');            //위에와 동일한 아이
+        console.log(pTag.textContent);
+
+        // value 값 넘겨 받기
+//        let inputTag = $('[name="title"]');   //name 속성으로 접근
+//        let title = inputTag.val();
+        let inputTag = document.querySelector('input[name="title"]');   // 두줄 동일한 아이
+        inputTag = document.getElementsByName('title')[0];               // id는 단수 나머지는 복수의 형태를 볼수있다
+                                                                        // ★★(그래서 배열형태로 오기때문에 인덱스가 꼭 필요) 인덱스 안쓰면 textcotent가 안됨  
+        let title = inputTag.value;
+
+        //생성
+//        let hTag = $('<h3/>');
+//        hTag.text(title);
+        let hTag = document.createElement('h3');
+        hTag.textContent = title;
+
+//         $('div').append(hTag); //jquery 의 append
+        document.getElementById('app').append(hTag);
+        document.getElementsByTagName('div')[0].append(hTag);  //위에꺼랑 같은 아이
+
+        
+        
+
+        
+    </script>
+</body>
+</html>

@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
+</head>
+<body>
+    <div id="app">
+        <h1>탐색선택자</h1>
+        <ul id="menu">
+            <li>내용1</li>
+            <li>내용2</li>
+            <li>내용3</li>
+            <li>내용4</li>
+            <li>내용5</li>
+        </ul>
+    </div>
+
+    <script>
+        //first, last
+        $('#menu li:first').text('first 변경');
+        
+
+
+        $('#menu li').first().css('color', 'red');
+        let liList = $('#menu li');
+        $('#menu li:last').text('last 변경');
+        liList.eq(3).css('color', 'red');
+        $('#menu li').last().css('color', 'blue');
+
+        //even: 홀수 번째 요소 -> 짝수 인덱스
+        //odd: 짝수 번째 요소 -> 홀수 인덱스
+
+        let oddTag = $('menu li:odd');
+        for(let tag of oddTag){
+            //배열 순환 시킴
+            console.log(tag);
+        }
+
+        let tObj = {
+            'employeeId' : 100,
+            'firstName' : 'Strven',
+            'lastName' : 'King'
+        }
+
+
+        for(let field in oddTag){
+            console.log(field, tObj[field]);   //for in 안에서는 tObj[field] 객체 부르는거 얘방식으로 하기
+        }
+
+        let tAray = [100, 'Strven' ,'King']
+
+        for(let index in tAray){
+            console.log(index);
+        }
+
+        //eq(몇번째 인덱스) lt( 기준인덱스보다 작다), gt(기준인덱스보다 크다) -> 인덱스를 이용
+        $('#menu li:eq(3)').text('내용을 수정한다.');
+        $('#menu li').eq(3).css('color', 'orange');
+
+        $('#menu li:lt(2)').text('lt에 해당');
+    </script>
+
+    <div>
+        <h1>탐색선택자2</h1>
+        <ol>
+            <p> p 태그</p>
+            <li>내용1-1</li>
+            <li>내용1-2</li>
+            <li>내용1-3</li>
+            <li>내용1-4</li>
+            <li>내용1-5</li>
+            <li>내용1-6</li>
+        </ol>
+        <ol>
+            <li>내용2-1</li>
+            <li>내용2-2</li>
+            <li>내용2-3</li>
+        </ol>
+        <ol>
+            <li>추가된 내용</li>
+        </ol>
+    </div>
+
+    <script>
+        //first-of-type, last-of-type       //-of-type 은 그룹을 나눈다 타입이 맞으면 각각 다 적용
+        $('ol li:first-of-type').text('첫번째');
+        $('ol li:last-of-type').text('마지막');
+        //  li 이외에 다른 태그가 섞이면 지금과 달라질수 있음
+
+        //nth-child(모든 자식의 순서에서 찾음), nth-of-type(해당하는자식 태그 요소에서의 순서를 찾음)
+        $('ol li:nth-child(1)').text('nth-child 첫번째');    //인덱스 기준이 아님 (1부터임)
+        $('li:nth-child(3n)').css('border', '5px solid black');  //배수의 형태
+        
+        //only-child(유일하게 형제가 존재하지 않는 요소를 찾을때 사용), slice(start index, end index) :start ~ end-1
+        $('li:only-child').text('자식요소');
+
+        $('ol li').slice(1,3).css('background-color','yellow');
+
+    </script>
+</body>
+</html>
