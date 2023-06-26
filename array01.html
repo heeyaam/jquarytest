@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
+</head>
+<body>
+    <div id="ex01">
+        <h1>배열 메서드</h1>
+        <ul id="menu1">
+            <li>내용1-1</li>
+            <li>내용1-2</li>
+            <li>내용1-3</li>
+        </ul>
+        <ul id="menu2">
+            <li>내용2-1</li>
+            <li>내용2-2</li>
+            <li>내용2-3</li>
+        </ul>
+    </div>
+
+    <script>
+        const obj = [
+            {"area": "서울"},
+            {"area": "부산"},
+            {"area": "전주"}
+        ]
+
+        //each() : 배열에 대한 순환
+        let ulTag = $('<ul/>');      // ul 은 밖에서 선언  안에서 사용 li는 안에서 선언 사용
+        $(obj).each(function(index, object){
+            //$('<li/>').text(object["area"]); 밑에 꺼랑 같은거
+            let liTag = $('<li/>').text(object.area);
+            ulTag.append(liTag);
+        });
+
+        $('#ex01').append(ulTag);
+
+        $.each(obj, function(){});
+    </script>
+</body>
+</html>
