@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
+</head>
+<body>
+    <div id="ex01">
+        <h1>배열 메서드</h1>
+        <ul id="menu1">
+            <li>내용1-1</li>
+            <li>내용1-2</li>
+            <li>내용1-3</li>
+        </ul>
+        <ul id="menu2">
+            <li>내용2-1</li>
+            <li>내용2-2</li>
+            <li>내용2-3</li>
+        </ul>
+    </div>
+
+    <script>
+        const obj = [
+            {"area": "서울"},
+            {"area": "부산"},
+            {"area": "전주"}
+        ]
+
+        //each() : 배열에 대한 순환
+        let ulTag = $('<ul/>');      // ul 은 밖에서 선언  안에서 사용 li는 안에서 선언 사용
+        $(obj).each(function(index, object){
+            //$('<li/>').text(object["area"]); 밑에 꺼랑 같은거
+            let liTag = $('<li/>').text(object.area);
+            ulTag.append(liTag);
+        });
+
+        $('#ex01').append(ulTag);   //태그를 만들고 dom 에 등록하려면 기존에 꺼에 append해줘야한다(화면에 띄우려면)
+
+        ulTag = $('<ul/>');
+        $.each(obj, function(index, object){
+            let liTag = $('<li/>').text(object.area);
+            ulTag.append(liTag);
+        });
+
+        let liList = ulTag.children();
+        $(liList).each((index, object) => {
+            console.log(object.tagName, object.textContent);
+        });
+
+        $.each($('#ex01 ul:first *'), (index, object) =>{     //공백은 하위 요소를 뜻함 //첫번째 변수는 인덱스,,값는 두번째 변수에 온다(규칙)
+            console.log(object.textContent);
+            console.log($(object).text());
+        })
+
+        let arr1=[
+        {"area" : "서울", "dept" :"영업", "name" :"무대리"},
+        {"area" : "부산", "dept" :"영업", "name" :"홍과장"},
+        {"area" : "대전", "dept" :"생산", "name" :"박사장"},
+        {"area" : "서울", "dept" :"생산", "name" :"김부장"}
+        ]
+
+        let mapAry =$.map(arr1,function(obj,idx){
+            if(obj.area=='서울'){
+                return obj.name
+            }
+        })
+
+        //$.map() -> return 값만 가지고 새로운 배열
+        let areaAry = $.map(arr1, function(obj,idx){
+            return obj.area;
+        })
+
+        console.log('현재 사원들의 근무지 현황');
+        $(areaAry).each(function(idx, value){
+            console.log(value);
+        })
+        let grepAry = $.grep(arr1, function(obj, idx){
+            if(obj.dept =="영업"){
+                return true;
+            }else{
+                return false;
+            }
+        })
+
+        $.grep(arr1, function(obj, idx){
+            return obj.area =='서울' ? true : false;
+            console.log(obj.area, obj.dept, obj.name);
+        })
+
+        let seoulAry = $.grep(arr1,function(obj,idx){
+            return obj.area =='서울' ? true : false;
+            console.log(obj.area, obj.dept, obj.name);
+        });
+        $.each(seoulAry,function(idx,obj){
+            console.log(obj.area, obj.dept, obj.name);
+        })
+    </script>
+</body>
+</html>
