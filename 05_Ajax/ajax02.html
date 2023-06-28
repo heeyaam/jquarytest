@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
+    <style>
+        table{
+            border: 1px solid #000;
+        }
+        th{
+            border: 1px dotted #000;
+        }
+        td{
+            border: 1px dotted #000;
+        }
+    </style>
+</head>
+<body>
+    <script>
+        // [] 는 문자열로 인식 '' 없는 것은 변수로 따지기 때문에 []로 할때'' 넣어주기  
+        //자바스크립트에서는 :  완쪽을 자동으로 문자열로 인식하기에  ''를 넣어않아도 인식이 가능했다 . 특수문자는 문자열로 자동 인식안될수 있어서 '' 안에 넣어주기
+        let objAry= [
+            { empNo : 1000, name : 'Hong', dept : 'Sales'},
+            { empNo : 2000, name : 'Kang', dept : 'Marketing'},
+            { empNo : 3000, name : 'Lee', dept : 'IT'}
+        ]
+
+        //console.log(objAry[0][empNo], objAry[0]['empNo'], objAry[0].empNo);  // .은 저애를 찾는것은 할수 있지만 동적일때는 쓸수없음
+    </script>
+    <script>
+        $(function(){
+            selectEmployees();
+        });
+    </script>
+
+    <div>
+        <!-- 단건조회 / 등록 / 수정 / 삭제-->
+        <form id="info"> 
+            <div>
+                <label for="id">사원번호</label>
+                <input type="number" id="id" name="employee_id">
+            </div>
+            <div>
+                <label for="last_name">성</label>
+                <input type="text" id="first" name="last_name">
+            </div>
+            <div>
+                <label for="first_name">이름</label>
+                <input type="text" id="last" name="first_name">
+            </div>
+            <div>
+                <label for="email">이메일</label>
+                <input type="email" id="email" name="email">
+            </div>
+            <div>
+                <label for="job_id">직책</label>
+                <input type="text" id="job" name="job_id">
+            </div>
+            <div>
+                <label for="hire_date">입사일</label>
+                <input type="date" id="hireDate" name="hire_date">
+            </div>
+            <button type="button" id="insertBtn">등록</button>
+            <button type="button" id="updateBtn">수정</button>
+            <button type="button" id="deleteBtn">삭제</button>
+        </form>
+    </div>
+
+
+    <div>
+        <!-- 전체조회-->
+        <button type="button" id="ckDel">선택삭제</button>
+        <table id="empList">
+
+        </table>
+    </div>
+
+    <script>
+        const header = ['employee_id','last_name','hire_date','job_id'];
+
+        //Utill //데이터 타입 관련 
+        function getDate(sec){
+            let date = new Date(sec);   // 새로운 객체 생성 input 데이터 타입은 하이픈
+            let year = date.getFullYear();
+            let month = ('0' + (date.getMonth() + 1)).substr(-2)     //정확한 원을 위해서는  // 음수 쓰면 뒤에서 부터 잘라냄
+            let day = ('0' + date.getDate() ).substr(-2);
+
+            return year + '-'+ month + '-' +day;
+        }
+
+
+        // DB 데이터 -> table
+
+        function selectEmployees(){
+            $.ajax({
+                url : 'http://192.168.0.37/myserver/empSelect',
+                type : 'get',
+                success : function(data){
+                    //1) console.log(data);
+
+                    // thead 생성하기
+                    let theadTag = $('<thead/>');
+                    let trTag = $('<tr/>');
+
+
+                    
+                    // for(let field in data[0]){
+                    //     //for in 은 객체 내부에 있는 필드를 가져오는것
+                    //     //for of 배열
+                    //     //반복문시 반복문안에 집어넣는거 있어줘야함
+                    //     let thTag = $('<th/>').text(field);
+                    //     trTag.append(thTag);
+                    // }
+
+                    for(let field of header){
+                        //for in 은 객체 내부에 있는 필드를 가져오는것
+                        //for of 배열
+                        //반복문시 반복문안에 집어넣는거 있어줘야함
+                        let thTag = $('<th/>').text(field);
+                        trTag.append(thTag);
+                    }
+
+                    theadTag.append(trTag);
+                    $('#empList').append(theadTag);
+
+
+                    //tbody 생성하기
+                    let tbodyTag = $('<tbody/>');
+
+                    //내가 한 이벤트 걸기
+                    $.each(data, function(idx, obj){
+                        trTag = $('<tr/>');
+                        trTag.on('click', function(e){
+                        let empId = e.currentTarget.firstChild.textContent;  //target은 특정한 조건에서 사용, a뭔가 검색해서 결과 받아오려면 currentTarget
+                        console.log(empId);
+                        
+                        selectEmpInfo(empId);
+
+                    })
+
+                        // for(let field in obj){
+                        //     let tdTag = $('<td/>').text(obj[field]);
+                        //     trTag.append(tdTag);
+                        // }
+                        for(let field of header){
+                            let tdTag = $('<td/>').text(obj[field]);
+                            trTag.append(tdTag);
+                        }
+                        tbodyTag.append(trTag);
+
+                    })
+                    $('#empList').append(tbodyTag);
+                },
+                error : function(reject){
+                    console.log(reject);
+                }
+            })
+        }
+
+        //단건 조회
+        function selectEmpInfo(empId){
+            $.ajax({
+                url : 'http://192.168.0.37/myserver/empFind?'+ empid,
+                type : 'get',
+                success : function(result){
+                    let data = result.data;
+
+                    for(let field in data){
+                        let selector = 'form input[name="'+field+'"]';
+                        
+                    }
+                }
+            })
+        }
+    </script>
+</body>
+</html>
